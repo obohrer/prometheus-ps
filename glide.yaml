@@ -1,0 +1,16 @@
+package: .
+import:
+- package: github.com/davecgh/go-spew
+  subpackages:
+  - spew
+- package: github.com/mitchellh/go-ps
+- package: github.com/pmezard/go-difflib
+  subpackages:
+  - difflib
+- package: github.com/stretchr/objx
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
+  - http
+  - mock
+  - require
