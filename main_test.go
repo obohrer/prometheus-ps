@@ -67,11 +67,12 @@ func TestWriteProcessesMetrics(t *testing.T) {
 	writeProcessesMetrics(rr, pl)
 
 	expectedOutputPartA := `# HELP process_up The number of occurences of the process name
-# TYPE process_up gauge
-process_up{name="a"} 2`
-	expectedOutputPartB := `process_up{name="c"} 1`
+# TYPE process_up gauge`
+	expectedOutputPartB := `process_up{name="a"} 2`
+	expectedOutputPartC := `process_up{name="c"} 1`
 
 	assert.True(strings.Contains(rr.Body.String(), expectedOutputPartA))
 	assert.True(strings.Contains(rr.Body.String(), expectedOutputPartB))
+	assert.True(strings.Contains(rr.Body.String(), expectedOutputPartC))
 
 }

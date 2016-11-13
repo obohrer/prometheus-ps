@@ -11,9 +11,6 @@ import (
 	ps "github.com/mitchellh/go-ps"
 )
 
-// globals
-var cfg Configuration
-
 func sanitizeName(s string) string {
 	return strings.Replace(strings.Replace(strings.ToLower(s), "-", "_", -1), " ", "_", -1)
 }
