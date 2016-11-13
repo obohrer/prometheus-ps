@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,20 +18,12 @@ func sanitizeName(s string) string {
 	return strings.Replace(strings.Replace(strings.ToLower(s), "-", "_", -1), " ", "_", -1)
 }
 
-func buildMetricName(executable string) string {
-	var buffer bytes.Buffer
-	buffer.WriteString("process_")
-	buffer.WriteString(sanitizeName(executable))
-	buffer.WriteString("_up")
-	return buffer.String()
-}
-
 func writeProcessesMetrics(w http.ResponseWriter, ps map[string]int) {
+	const metricName = "process_up"
+	fmt.Fprintf(w, "# HELP %s The number of occurences of the process name\n", metricName)
+	fmt.Fprintf(w, "# TYPE %s gauge\n", metricName)
 	for process, c := range ps {
-		metricName := buildMetricName(process)
-		fmt.Fprintf(w, "# HELP %s The process %s is up\n", metricName, metricName)
-		fmt.Fprintf(w, "# TYPE %s gauge\n", metricName)
-		fmt.Fprintf(w, "%s %d\n", metricName, c)
+		fmt.Fprintf(w, "%s{name=\"%s\"} %d\n", metricName, sanitizeName(process), c)
 	}
 }
 

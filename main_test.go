@@ -50,12 +50,12 @@ func TestGroupByName(t *testing.T) {
 	assert.Equal(grouped["c"], 1, "c is once in the list")
 }
 
-func TestBuildMetricName(t *testing.T) {
+func TestSanitizeName(t *testing.T) {
 	// test special chars + upper case
 	assert := assert.New(t)
-	assert.Equal(buildMetricName("yo"), "process_yo_up")
-	assert.Equal(buildMetricName("Yo"), "process_yo_up")
-	assert.Equal(buildMetricName("HellO Test"), "process_hello_test_up")
+	assert.Equal(sanitizeName("yo"), "yo")
+	assert.Equal(sanitizeName("Yo"), "yo")
+	assert.Equal(sanitizeName("HellO Test"), "hello_test")
 }
 
 func TestWriteProcessesMetrics(t *testing.T) {
@@ -66,12 +66,10 @@ func TestWriteProcessesMetrics(t *testing.T) {
 	pl["c"] = 1
 	writeProcessesMetrics(rr, pl)
 
-	expectedOutputPartA := `# HELP process_a_up The process process_a_up is up
-# TYPE process_a_up gauge
-process_a_up 2`
-	expectedOutputPartB := `# HELP process_c_up The process process_c_up is up
-# TYPE process_c_up gauge
-process_c_up 1`
+	expectedOutputPartA := `# HELP process_up The number of occurences of the process name
+# TYPE process_up gauge
+process_up{name="a"} 2`
+	expectedOutputPartB := `process_up{name="c"} 1`
 
 	assert.True(strings.Contains(rr.Body.String(), expectedOutputPartA))
 	assert.True(strings.Contains(rr.Body.String(), expectedOutputPartB))
