@@ -15,5 +15,5 @@ Example of config :
 
 ```json
 {"WatchList":["top", "usbagent", "mdworker", "iTerm2"],
- "Port":7080}
+ "Port":9105}
 ```
