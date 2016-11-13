@@ -18,7 +18,7 @@ type Void struct{}
 
 // ReadConfig read the configuration file at loc
 func ReadConfig(loc string) Configuration {
-	fmt.Println("Reading conf.json ...")
+	fmt.Printf("Reading %s ...\n", loc)
 	file, _ := os.Open(loc)
 	decoder := json.NewDecoder(file)
 	config := Configuration{}
